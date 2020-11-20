@@ -46,12 +46,26 @@ export class TaskRepository extends ITaskRepository{
         });
     }
 
-    merge(task: Task): Promise<Task> {
-        return Promise.resolve(undefined);
+   async merge(task: Task): Promise<Task> {
+        let result = await this.connection.execute(
+            'update tasks set title=?, description=?, updated_at=?, created_at=? where id = ?',
+            [task.title, task.description, task.updateAt, task.createdAt, task.id]
+        )
+        return task
     }
 
-    persist(task: Task): Promise<Task> {
-        return Promise.resolve(undefined);
+    async persist(task: Task): Promise<Task> {
+        let result = await this.connection.execute(
+            'insert into tasks (title, description, created_at, updated_at) (?, ?, ?, ?)',
+            [
+                task.title,
+                task.description,
+                task.getUTCCreatedAt(),
+                task.getUTCUpdatedAt()
+            ]
+        )
+        task.id = result.id
+        return task
     }
 
 }
