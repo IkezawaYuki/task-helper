@@ -45,6 +45,7 @@ export class MysqlConnection extends IDBConnection{
             console.log('Connection %d released', connection.threadId)
         })
     }
+
     execute(query: string, params: any): any {
         if (params !== null){
             return this.pool.query(query, params)
