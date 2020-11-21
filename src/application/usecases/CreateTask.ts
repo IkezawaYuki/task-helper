@@ -9,5 +9,10 @@ export class CreateTask{
         this.taskRepository = taskRepository
     }
 
-    //todo
+    execute(title: string, description: string){
+        let task = new Task(title, description)
+        task.createdAt = moment()
+        task.updateAt = moment()
+        return this.taskRepository.persist(task)
+    }
 }
